@@ -43,4 +43,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+var server = app.listen(80, "0.0.0.0", function () {
+    var host = server.address().address;
+    var port = server.address().port;
+    console.log("应用已启动", host, port)
+});
+
 module.exports = app;
