@@ -4,6 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongo = require('mongodb')
+var monk = require('monk')
+//用monk连接数据库 服务器位置 端口 数据库名称
+var db = monk('localhost:27017/pirated')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -41,6 +45,12 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+// 允许router连接db 通过req.db来操作数据库
+app.use(function (req, res, next) {
+    req.db = db;
+    next();
 });
 
 var server = app.listen(80, "0.0.0.0", function () {
